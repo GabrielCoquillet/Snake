@@ -12,7 +12,7 @@ class JeuSnake:
         self.snake = [[3,3],[2,3],[1,3]]
         self.score = 0
         self.direction = [1,0]
-        self.food = [20,20]
+        self.food = [8,5]
         pyxel.run(self.update, self.draw)
 
     def move(self):
@@ -28,10 +28,13 @@ class JeuSnake:
             self.direction = [1,0]
 
     def food_(self):
-        if self.food in self.snake:
+        if self.food == self.snake[0]:
             self.score += 1
+            end = [self.snake[-1][0] + self.direction[0], self.snake[-1][1] + self.direction[1]]
+            self.snake.append(end)
         while self.food in self.snake:
-            self.food = [random.randint(0,self.WIDTH/self.CASE-1),random.randint(0,self.HEIGHT/self.CASE-1)]
+            self.food = [random.randint(0,self.WIDTH//self.CASE-1),random.randint(0,self.HEIGHT//self.CASE-1)]
+
     def update(self):
         if pyxel.frame_count % self.FRAME_REFRESH == 0:
             head = [self.snake[0][0]+self.direction[0], self.snake[0][1]+self.direction[1]]
@@ -46,9 +49,9 @@ class JeuSnake:
         pyxel.cls(0)
         x_head, y_head = self.snake[0]
         pyxel.rect(x_head*self.CASE, y_head*self.CASE, self.CASE,self.CASE,10)
-        pyxel.rect(self.food[0], self.food[1], self.CASE,self.CASE,8)
+        pyxel.rect(self.food[0]*self.CASE, self.food[1]*self.CASE, self.CASE,self.CASE,8)
         for ring in self.snake[1:]:
             x, y = ring[0], ring[1]
             pyxel.rect(x*self.CASE, y*self.CASE, self.CASE,self.CASE,9)
-        pyxel.text(5, 5, f"SCORE : {self.score}", 7)
+        pyxel.text(5, 5, f"SCORE : {self.score}", 7, font=None)
 jeu = JeuSnake()
